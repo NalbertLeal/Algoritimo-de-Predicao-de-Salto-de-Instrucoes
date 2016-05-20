@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 #include "preditorUmBit.hpp"
 
@@ -11,26 +12,13 @@
 *   @brief    A função run()
 *   @param    argc    Esse parametro recebe o parametro inteiro argc do main.
 *   @param    argv[]  Esse parametro recebe o parametro array de char argv[] do main.
-*   @return   
+*   @return   Essa função não possui retorno.
 */
 void UmBit::run(int &argc, const char *argv[]) {
   if(argc != 2) {
     throw(Erro(Erro::Type::ArquivoNaoFoiAberto)); // falha de arquivo não aberto
     // exit(1);
   }
-
-  this->matriz = new int*[4]; // São 3 correlações mais o primeiro salto que não possui correlação.
-                              // descobrir um modo de pegar o numero de correlações que serão feitas.
-
-   for(int x = 0; x < 3;x++)
-    matriz[x] = nullptr;
-
-   int quantas = this->tokenizar( nome); // faz a leitura e a extração dos dados para o arquivo
-    Preditor preditor(matriz, quantas+1, 2);
-    preditor.processar();
-
-   for(int x = 0; x < 4; x++);
-    //delete [] matriz[x]; // liberando memória
 
   std::string nomeArquivo = argv[1];
 
@@ -52,29 +40,58 @@ void UmBit::lerArquivo(std::string nomeArquivo) {
     // exit(1);
   }
 
-  std::string line = "";
-  int x = 0;
-  for(x=0; !fileIn.eof(); e++) {
-    std::getline(fileIn, line);
-    this->tokenizar(matriz);
-    this->extrair_saltos(linha, matriz[x]);
+  for(int x = 0; x < 3 || x < tamanhoSaltos();x++) {
+    this->saltos[x] = nullptr;
   }
+
+  std::string linha = "";
+  int quantos = 0;
+  int k = 0;
+  for(k=0; !fileIn.eof() && !fileIn.fail() && k < tamanhoSaltos(); k++) {
+    std::getline(fileIn, linha);
+    quantos = this->extrair_saltos(linha, saltos[k]);
+  }
+
+  for(int x = 0; x < tamanhoSaltos(); x++)
+    this->resultados[x] = new int[quantos];
 
   fileIn.close();
 }
 
-int tokenizar(int **&matriz) {
-
-  int x = 0; // essa vriavel coloca os saltos em suas posições na matriz
-  int quantos; // guarda quantas interaçãoes esses saltos vão ter
-  while(!arquivo.fail() && x < 4) { // esse loop vai percorrer linha a linha do arquivo lendo até 4 saltos
-    std::getline(arquivo, linha); // lendo a linha e guardando na string linha
-    quantos = extrair_saltos(linha, matriz[x]); // extraindo todos os numeros encontratos na linha e armazenando na matriz
-    x++;
+/*!
+*   @brief    Esse função controla a execução do codigo que faz a predição de salto. Para executala é importante que antes o arquivo de entrada ja tenha sido lido.
+*   @param    linha   Esse parametro recebe alinha que deverá ser tratada.
+*   @param    salto  Esse parametro recebe uma das posições do vector de ponteiros de inteiros Matriz. 
+*   @return   Essa função não possui retorno.
+*/
+int UmBit::extrair_saltos(std::string linha, int *&salto) {
+  salto = new int[linha.size()]; // alocando espaço para todas as interações
+  salto[0] = 0; // esse elemento representa a correlação do salto
+  int x = 1; // variável de controle para o vetor de saltos
+  bool lendo_correlacao = true; // esse booleano controla se a correlação está sendo lida nesse momento
+   for(int i = 0; linha[i] != '\0'; i++)  { // percorrer todos os caracteres
+    if(lendo_correlacao) {//  verificar se o o salto tem correlação
+      if(linha[i] == '-') { // caso não aja correlação de salto
+        salto[0] = 0; // não tem correlação com ninguem
+      }
+      else {
+       if(linha[i] == ' ')
+        lendo_correlacao = false; // terminou de ler correlação e vai começar com as interações
+       else {
+        if(linha[i] == '/') salto[0] *= 10; // abrindo espaço para por a nova correlação
+        else salto[0] += linha[i] - '0'; // convertendo de caractere para inteiro
+       }
+      }
+    }
+    else { // caso o caracter atual NÃO seja um numero porem o ultimo caracter lido era um numero
+      if(linha[i] == 'T')
+        salto[x] = 1;
+      else
+        salto[x] = 0;
+      x++;
+    }
   }
-}
-
-  this->arquivo = line;
+  return x;
 }
 
 /*!

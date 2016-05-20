@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 #include "erro.hpp"
 
@@ -12,7 +13,11 @@
 */
 class UmBit {
   public:
-    UmBit(bool valorInicial = false) : valorInicial(valorInicial)  {}
+    UmBit(bool valorInicial = false, int quantidadeSaltos = 4) : valorInicial(valorInicial)  {
+    	this->saltos = new int*[valorInicial];
+    	this->resultados = new int*[valorInicial];
+    }
+
     ~UmBit() {}
 
     //	A função run() é responsavel por controlar a ordem de execução das funções da classe UmBit.
@@ -25,8 +30,10 @@ class UmBit {
     bool tomado;
     //  A variavel valorInicial armazena o valor inicial da previsão quando o objeto dessa classe é criado.
     bool valorInicial;
-    // **matriz
-    int **matriz;
+    // **saltos
+    int **saltos;
+    // **saltos
+    int **resultados;
 
     // As funções abaixo são privadas e somente podem ser lidas dentro dessa classe.
 
@@ -34,10 +41,12 @@ class UmBit {
     void predicao();
     //	A função lerArquivo() controla a execução da abetura e leitura do arquivo de leitura que foi passado por parametro.
     void lerArquivo(std::string);
-    // A função tokenizar() faz a tokenização dos dados do arquivo
-    int tokenizar(int **&matriz);
-    // A função extrairSaltos() extria s saltos
+    // A função extrairSaltos() extrai os saltos do arquivo lido
     int extrair_saltos(std::string bruto, int *&saltos);
+    // A função retorna a quantidade de elementos de saltos
+    int tamanhoSaltos() { return (sizeof(saltos)/sizeof(saltos[0])); }
+    // A função retorna a quantidade de elementos de resultados
+    int tamanhoResultados() { return (sizeof(resultados)/sizeof(resultados[0])); }
 };
 
 #include "preditorUmBit.inl"
