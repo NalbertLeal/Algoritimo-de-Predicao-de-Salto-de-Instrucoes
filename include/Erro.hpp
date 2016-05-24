@@ -28,7 +28,7 @@ class Erro {
 	// O enum Type armazena os nomes dos erros que podem ocorrer e atribui algum valor inteiro para cada erro.
 	enum Type {
 		ArquivoNaoFoiAberto = 1,
-		ArquivoNaoAouC = 2
+		ArquivoNaoPedeSerLido = 2
 	};
 	private:
 		// variável err é do tipo inteiro e armazena o numero que representa o erro que ocorreu.

@@ -1,3 +1,3 @@
 All:
-	@echo "Compilndo preditor..."
-	@g++ -Wall -std=c++11 src/main.cpp -I include/ -o build/preditor
+	@echo "compilando ..."
+	@g++ -std=c++11 -I include src/main.cpp -o bin/teste
