@@ -1,4 +1,4 @@
-# HashTbl
+# Predição de salto
 
 ### tópicos abordados:  
   
@@ -32,7 +32,7 @@ Esse projeto está sendo desenvolvido como uma atividade complementar ao semestr
 ### Como compilar e executar
   Para compilar o código é indicado o compilador g++ pois esse foi o programa utilizado na compilação do codigo. Assumindo que os requerimentos/conselhos estejam sendo seguidos para compilar o codigo do vector usando o g++ é necessario utilizar o seguinte comando no terminar dentro da pasta Vector:
   
-    g++ -std=c++11 -I include src/main.cpp -o bin/predicaoDeDesvio
+    g++ -std=c++11 -I include src/main.cpp -o bin/predicaoDeSalto
   
   Também pode se utilizar o makefile, basta digitar o comando a seguir que o código será compilado:
   
