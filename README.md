@@ -63,6 +63,6 @@ Esse projeto está sendo desenvolvido como uma atividade complementar ao semestr
 - **email acadêmico/profissional**: nalbertg@outlook.com;  
 
 
-- **Aluno**: Matheus Alves;  
-- **GitHub**: github.com/MatheusAlvesA ;  
+- **Aluno**: Matheus Alves;
+- **GitHub**: github.com/MatheusAlvesA;
   
