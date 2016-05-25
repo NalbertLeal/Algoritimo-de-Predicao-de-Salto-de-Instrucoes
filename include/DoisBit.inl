@@ -45,6 +45,7 @@ void DoisBit::lerArquivo(std::string nomeArquivo) {
 		this->extrairSalto(linha, matrizSaltos[k]);
 	}
 
+	// imprime na tela do usuario oque foi lido
 	for(int u = 0; u < matrizSaltos.size(); u++) {
 		std::vector<std::string> s = matrizSaltos[u];
 		for(int y = 0; y < s.size(); y++) {
@@ -87,12 +88,93 @@ void DoisBit::extrairSalto(std::string linha, std::vector<std::string> & salto) 
 	}
 }
 
-void DoisBit::preditor() {}
+void DoisBit::preditor() {
+	bool bitMuda = tomado;
+	int counter = 0;
+	for(int u = 0; u < matrizSaltos.size(); u++) {
+		std::vector<std::string> salto = matrizSaltos[u];
+		if(matrizSaltos[u][0] == "0") {
+			// esse salto não tem corelação
+			for(int y = 0; y < salto.size(); y++) {
+				std::string valor = matrizSaltos[u][y];
+				if(valor == "T") {
+					resultadosPredicoes[u+counter][y] = valor;
+					if(tomado == true && valor == "T") {
+						resultadosPredicoes[u*2][y] = "A";
+						bitMuda = true;
+					}
+					else if(tomado == true && valor == "N") {
+						resultadosPredicoes[u*2][y] = "E";
+						if(bitMuda == false) {
+							bitMuda = true;
+							tomado = false;
+						}
+						else {
+							bitMuda = false;
+						}
+					}
+					else if(tomado == false && valor == "N") {
+						resultadosPredicoes[u*2][y] = "A";
+						bitMuda = true;
+					}
+					else if(tomado == false && valor == "T") {
+						resultadosPredicoes[u*2][y] = "E";
+						if(bitMuda == false) {
+							bitMuda = true;
+							tomado = false;
+						}
+						else {
+							bitMuda = false;
+						}
+					}
+				}
+				counter++;
+			}
+		}
+		else {
+			//esse salto possui correlação
+			for(int y = 0; y < salto.size(); y++) {
+				std::string valor = matrizSaltos[u][y];
+				if(valor == "T") {
+					resultadosPredicoes[u+counter][y] = valor;
+					if(tomado == true && valor == "T") {
+						resultadosPredicoes[u*2][y] = "A";
+						bitMuda = true;
+					}
+					else if(tomado == true && valor == "N") {
+						resultadosPredicoes[u*2][y] = "E";
+						if(bitMuda == false) {
+							bitMuda = true;
+							tomado = false;
+						}
+						else {
+							bitMuda = false;
+						}
+					}
+					else if(tomado == false && valor == "N") {
+						resultadosPredicoes[u*2][y] = "A";
+						bitMuda = true;
+					}
+					else if(tomado == false && valor == "T") {
+						resultadosPredicoes[u*2][y] = "E";
+						if(bitMuda == false) {
+							bitMuda = true;
+							tomado = false;
+						}
+						else {
+							bitMuda = false;
+						}
+					}
+				}
+				counter++;
+			}
+		}
+		counter = 0;
+	}
+}
 
 void DoisBit::clear() {
-	for(int i = 0; i < matrizSaltos.size(); i++) {
-		matrizSaltos.~vector();
-	}
+	matrizSaltos.clear();
 }
 
 #endif
