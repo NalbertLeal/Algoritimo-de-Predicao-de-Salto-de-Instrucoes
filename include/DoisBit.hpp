@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <fstream>
 
 #include "Erro.hpp"
 
@@ -13,6 +14,12 @@
 */
 class DoisBit {
 	public:
+		DoisBit() :
+		tomado(false)
+		{
+			matrizSaltos.resize(4);
+		}
+
 		DoisBit(bool valorInicial) :
 		tomado(valorInicial)
 		{
@@ -21,14 +28,16 @@ class DoisBit {
 
 		~DoisBit()
 		{
-			this->clear();
+			for(int i = 0; i < matrizSaltos.size(); i++) {
+				matrizSaltos.~vector();
+			}
 		}
 
-		void run(int &argc, const char *argv[]);
+		void run(int &argc, char const *argv[]);
 	private:
-		bool predicao();
 		void lerArquivo(std::string);
-		int extrairSalto(std::string);
+		bool predicao();
+		void extrairSalto(std::string, std::vector<std::string> &);
 
 		void preditor();
 

@@ -1,6 +1,11 @@
-#ifndef _UMBIT_HPP_
-#define _UMBIT_HPP_
+#ifndef _UMBIT_INL_
+#define _UMBIT_INL_
 
+#include <vector>
+#include <string>
+#include <fstream>
+
+#include "DoisBit.hpp"
 #include "Erro.hpp"
 
 /*
@@ -8,7 +13,7 @@
 *	@param 		
 *	@return 	
 */
-void DoisBit::run(int &argc, const char *argv[]) {
+void DoisBit::run(int &argc, char const *argv[]) {
 	if(argc != 3) {
 		throw(Erro(Erro::Type::ArquivoNaoFoiAberto));
 	}
@@ -16,7 +21,7 @@ void DoisBit::run(int &argc, const char *argv[]) {
 	std::string nomeArquivo = argv[1];
 
   	this->lerArquivo(nomeArquivo);
-  	this->predicao();
+  	// this->predicao();
 }
 
 /*
@@ -24,7 +29,7 @@ void DoisBit::run(int &argc, const char *argv[]) {
 *	@param 		
 *	@return 	
 */
-bool DoisBit::predicao(std::string nomeArquivo) {
+void DoisBit::lerArquivo(std::string nomeArquivo) {
 	
 	std::ifstream fileIn;
 	fileIn.open(nomeArquivo);
@@ -33,12 +38,20 @@ bool DoisBit::predicao(std::string nomeArquivo) {
 		throw(Erro(Erro::Type::ArquivoNaoPedeSerLido));
 	}
 
-	int quantos = 0
+	int quantos = 0;
 	std::string linha;
-	for( int k = 0; !fileIn.eof() && !fileIn.fail() && k < tamanhoSaltos(); k++) {
+	for( int k = 0; !fileIn.eof() && !fileIn.fail() && k < matrizSaltos.size(); k++) {
 		std::getline(fileIn, linha);
 		this->extrairSalto(linha, matrizSaltos[k]);
 	}
+
+	for(int u = 0; u < matrizSaltos.size(); u++) {
+		std::vector<std::string> s = matrizSaltos[u];
+		for(int y = 0; y < s.size(); y++) {
+			std::cout << s[y] << std::endl;
+		}
+	}
+
 }
 
 /*
@@ -46,13 +59,13 @@ bool DoisBit::predicao(std::string nomeArquivo) {
 *	@param 		
 *	@return 	
 */
-void DoisBit::extrairSalto(std::string linha, int &k, vector<int> & salto) {
+void DoisBit::extrairSalto(std::string linha, std::vector<std::string> & salto) {
 	long int x = 1;
 	salto = std::vector<std::string>(linha.size());
-	salto[0] = 0;
-	bool lendoCorrelacao = true;
+	salto[0] = "0";
+	bool lendo_correlacao = true;
 	for(int i = 0; i < linha.size(); i++) {
-		if(lendoCorrelacao) {
+		if(lendo_correlacao) {
 			if(linha[i] == ' ')
         		lendo_correlacao = false; // terminou de ler correlação e vai começar com as interações
        		else {
@@ -60,7 +73,6 @@ void DoisBit::extrairSalto(std::string linha, int &k, vector<int> & salto) {
        		}
 		}
 		else {
-
         	salto[x] = linha[i];
       		x++;
 		}
