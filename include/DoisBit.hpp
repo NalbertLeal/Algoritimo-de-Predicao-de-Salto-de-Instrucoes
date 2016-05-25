@@ -27,11 +27,7 @@ class DoisBit {
 		}
 
 		~DoisBit()
-		{
-			for(int i = 0; i < matrizSaltos.size(); i++) {
-				matrizSaltos.~vector();
-			}
-		}
+		{ /* Empty */ }
 
 		void run(int &argc, char const *argv[]);
 	private:

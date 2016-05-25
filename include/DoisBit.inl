@@ -30,7 +30,7 @@ void DoisBit::run(int &argc, char const *argv[]) {
 *	@return 	
 */
 void DoisBit::lerArquivo(std::string nomeArquivo) {
-	
+
 	std::ifstream fileIn;
 	fileIn.open(nomeArquivo);
 
@@ -69,7 +69,15 @@ void DoisBit::extrairSalto(std::string linha, std::vector<std::string> & salto) 
 			if(linha[i] == ' ')
         		lendo_correlacao = false; // terminou de ler correlação e vai começar com as interações
        		else {
-        		salto[0] += linha[i]; // convertendo de caractere para inteiro
+       			if(linha[i] == '-') {
+       				continue;
+       			}
+       			else if(salto[0][0] == '0') {
+       				salto[0] = linha[i];
+       			}
+       			else {
+       				salto[0] += linha[i]; // convertendo de caractere para inteiro
+       			}
        		}
 		}
 		else {

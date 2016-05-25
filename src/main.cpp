@@ -2,11 +2,17 @@
 #include <vector>
 #include <iostream>
 
+#include "Erro.hpp"
 #include "DoisBit.hpp"
 
 int main(int argc, char const *argv[])
 {
-	DoisBit dois(true);
-	dois.run(argc, argv);
+	try{
+		DoisBit dois(true);
+		dois.run(argc, argv);
+	}
+	catch(Erro erro) {
+		erro.what();
+	}
 	return 0;
 }
