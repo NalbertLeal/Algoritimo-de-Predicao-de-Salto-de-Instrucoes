@@ -1,6 +1,9 @@
 #ifndef _UMBIT_HPP_
 #define _UMBIT_HPP_
 
+#include <vector>
+#include <string>
+
 #include "Erro.hpp"
 
 /*
@@ -8,13 +11,15 @@
 *	@param 		
 *	@return 	
 */
-class UmBit {
+class DoisBit {
 	public:
-		UmBit(bool valorInicial) :
+		DoisBit(bool valorInicial) :
 		tomado(valorInicial)
-		{/* Empty */}
+		{
+			matrizSaltos.resize(4);
+		}
 
-		~UmBit()
+		~DoisBit()
 		{
 			this->clear();
 		}
@@ -23,18 +28,20 @@ class UmBit {
 	private:
 		bool predicao();
 		void lerArquivo(std::string);
-		int UmBit::extrairSalto(std::string);
+		int extrairSalto(std::string);
 
 		void preditor();
+
+		void clear();
 
 		// variaveis
 
 		// valor inicial da predição
 		bool tomado;
 		// matriz de vector que armqzena os resultados das predições
-		std::vector<std::vector<std::string>> matrizSaltos(4);
+		std::vector<std::vector<std::string>> matrizSaltos;
 };
 
-#include "UmBit.inl"
+#include "DoisBit.inl"
 
 #endif

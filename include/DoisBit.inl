@@ -1,9 +1,6 @@
 #ifndef _UMBIT_HPP_
 #define _UMBIT_HPP_
 
-#include <vector>
-#include <string>
-
 #include "Erro.hpp"
 
 /*
@@ -11,7 +8,7 @@
 *	@param 		
 *	@return 	
 */
-void UmBit::run(int &argc, const char *argv[]) {
+void DoisBit::run(int &argc, const char *argv[]) {
 	if(argc != 3) {
 		throw(Erro(Erro::Type::ArquivoNaoFoiAberto));
 	}
@@ -27,7 +24,7 @@ void UmBit::run(int &argc, const char *argv[]) {
 *	@param 		
 *	@return 	
 */
-bool UmBit::predicao(std::string nomeArquivo) {
+bool DoisBit::predicao(std::string nomeArquivo) {
 	
 	std::ifstream fileIn;
 	fileIn.open(nomeArquivo);
@@ -49,7 +46,7 @@ bool UmBit::predicao(std::string nomeArquivo) {
 *	@param 		
 *	@return 	
 */
-int UmBit::extrairSalto(std::string linha, int &k, vector<int>* salto) {
+void DoisBit::extrairSalto(std::string linha, int &k, vector<int> & salto) {
 	long int x = 1;
 	salto = std::vector<std::string>(linha.size());
 	salto[0] = 0;
@@ -63,17 +60,19 @@ int UmBit::extrairSalto(std::string linha, int &k, vector<int>* salto) {
        		}
 		}
 		else {
-			//if(linha[i] == 'T')
-        	//	salto[x] = 1;
-      		//else
-        	//	salto[x] = 0;
+
         	salto[x] = linha[i];
       		x++;
 		}
 	}
-	return x;
 }
 
-void UmBit::preditor() {}
+void DoisBit::preditor() {}
+
+void DoisBit::clear() {
+	for(int i = 0; i < matrizSaltos.size(); i++) {
+		matrizSaltos.~vector();
+	}
+}
 
 #endif
