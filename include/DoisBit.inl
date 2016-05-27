@@ -161,7 +161,24 @@ void DoisBit::preditor() {
 		}
 		else {
 			// esse for analiza cada uma das strings
-			for(int k = 1; k < sizeVectorU; k++) {}
+			for(int k = 1; k < sizeVectorU; k++) {
+				std::string correlacao = matrizSaltos[u][0];
+				std::vector<std::string> vectorCorrelacao(correlacao.size());
+				int counter3 = 0;
+				for(int r = 0; r < correlacao.size(); r++) {
+					if(counter3 == 0) {
+						vectorCorrelacao[counter3] = "";
+					}
+					if(correlacao[r] == '/') {
+						counter3 = 0;
+					}
+					else {
+						vectorCorrelacao[counter3] = vectorCorrelacao[counter3] + correlacao[r];
+						counter3++;
+					}
+				}
+				if(1 < correlacao.size()) {}
+			}
 		}
 	}
 }
