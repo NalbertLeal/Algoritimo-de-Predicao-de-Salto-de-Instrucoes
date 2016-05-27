@@ -15,13 +15,13 @@
 class DoisBit {
 	public:
 		DoisBit() :
-		tomado(false)
+		tomado("N")
 		{
 			matrizSaltos.resize(4);
 			resultadosPredicoes.resize(8);
 		}
 
-		DoisBit(bool valorInicial) :
+		DoisBit(std::string valorInicial) :
 		tomado(valorInicial)
 		{
 			matrizSaltos.resize(4);
@@ -44,7 +44,7 @@ class DoisBit {
 		// variaveis
 
 		// valor inicial da predição
-		bool tomado;
+		std::string tomado;
 		// matriz de vector que armazena oque foi lido no arquivo
 		std::vector<std::vector<std::string>> matrizSaltos;
 		// matriz de vector que armazena os resultados das predições

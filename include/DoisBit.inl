@@ -21,7 +21,27 @@ void DoisBit::run(int &argc, char const *argv[]) {
 	std::string nomeArquivo = argv[1];
 
   	this->lerArquivo(nomeArquivo);
-  	// this->predicao();
+  	this->preditor();
+
+  	// imprime na tela do usuario oque foi lido
+	for(int u = 0; u < matrizSaltos.size(); u++) {
+		std::vector<std::string> s = matrizSaltos[u];
+		for(int y = 0; y < s.size(); y++) {
+			std::cout << s[y] << std::endl;
+		}
+	}
+
+	std::cout << "\n\n>>> resultados : \n";
+
+	// imprime na tela do usuario oque foi lido
+	for(int u = 0; u < matrizSaltos.size(); u++) {
+		std::vector<std::string> s = resultadosPredicoes[u];
+		std::cout << " [ " ;
+		for(int y = 0; y < s.size(); y++) {
+			std::cout << s[y];
+		}
+		std::cout << " ] \n\n";
+	}
 }
 
 /*
@@ -43,14 +63,6 @@ void DoisBit::lerArquivo(std::string nomeArquivo) {
 	for( int k = 0; !fileIn.eof() && !fileIn.fail() && k < matrizSaltos.size(); k++) {
 		std::getline(fileIn, linha);
 		this->extrairSalto(linha, matrizSaltos[k]);
-	}
-
-	// imprime na tela do usuario oque foi lido
-	for(int u = 0; u < matrizSaltos.size(); u++) {
-		std::vector<std::string> s = matrizSaltos[u];
-		for(int y = 0; y < s.size(); y++) {
-			std::cout << s[y] << std::endl;
-		}
 	}
 
 }
@@ -89,87 +101,68 @@ void DoisBit::extrairSalto(std::string linha, std::vector<std::string> & salto) 
 }
 
 void DoisBit::preditor() {
-	bool bitMuda = tomado;
-	int counter = 0;
-	for(int u = 0; u < matrizSaltos.size(); u++) {
-		std::vector<std::string> salto = matrizSaltos[u];
+	std::string toma = this->tomado;
+	bool bitMuda = true;
+	int counter1 = 0, counter2 = 1;
+
+	for(int u = 0; u < this->matrizSaltos.size(); u++) {
+		int sizeVectorU = this->matrizSaltos[u].size();
+		// this->resultadosPredicoes[counter1] armazena a previsão doque o algoritimo acha que vai acontecer no salto
+		// o size de resultadosPredicoes[counter1] é igual a sizeVectorU-1 pois o primeiro elemento de matrizSaltos[u] é referente a correlação
+		this->resultadosPredicoes[counter1] = std::vector<std::string>(sizeVectorU-1);
+		// this->resultadosPredicoes[counter2] armazena a o resultado se oque está em this->resultadosPredicoes[counter1] é igual ou não a this->matrizSaltos[u]
+		// o size de resultadosPredicoes[counter1] é igual a sizeVectorU-1 pois o primeiro elemento de matrizSaltos[u] é referente a correlação
+		this->resultadosPredicoes[counter2] = std::vector<std::string>(sizeVectorU-1); 
+		counter1++;
+		counter2++;
+		// se entrar nesse if esse salto não possui correlação
 		if(matrizSaltos[u][0] == "0") {
-			// esse salto não tem corelação
-			for(int y = 0; y < salto.size(); y++) {
-				std::string valor = matrizSaltos[u][y];
-				if(valor == "T") {
-					resultadosPredicoes[u+counter][y] = valor;
-					if(tomado == true && valor == "T") {
-						resultadosPredicoes[u*2][y] = "A";
-						bitMuda = true;
+			// esse for analiza cada uma das strings
+			for(int k = 1; k < sizeVectorU; k++) {
+				// se entrar nesse if matrizSaltos[u][k] armazena o valor "T"
+				if(matrizSaltos[u][k] == "T") {
+					// se entrar nesse if a previsão esta correta armazena o valor "T"
+					if(toma == "T") {
+						bitMuda == true;
 					}
-					else if(tomado == true && valor == "N") {
-						resultadosPredicoes[u*2][y] = "E";
-						if(bitMuda == false) {
-							bitMuda = true;
-							tomado = false;
-						}
-						else {
+					// se não entrou no if a previsão estava errada, então entra no else
+					else {
+						// se entrar nesse if é porque este é o primeiro erro e bitMuda recebe false.
+						if(bitMuda == true) {
 							bitMuda = false;
 						}
-					}
-					else if(tomado == false && valor == "N") {
-						resultadosPredicoes[u*2][y] = "A";
-						bitMuda = true;
-					}
-					else if(tomado == false && valor == "T") {
-						resultadosPredicoes[u*2][y] = "E";
-						if(bitMuda == false) {
-							bitMuda = true;
-							tomado = false;
-						}
-						else {
+						// se não entrou no if é porque este é o segundo erro e bitMuda recebe true e a proxima previsão será para o contrario.
+						else{
 							bitMuda = false;
+							toma = "F";
 						}
 					}
 				}
-				counter++;
+				// se não entrou no if vai entrar no else pois matrizSaltos[u][k] armazena o valor "F"
+				else{
+					// se entrar nesse if a previsão esta correta armazena o valor "T"
+					if(toma == "F") {
+						bitMuda == true;
+					}
+					// se não entrou no if a previsão estava errada, então entra no else
+					else {
+						// se entrar nesse if é porque este é o primeiro erro e bitMuda recebe false.
+						if(bitMuda == true) {
+							bitMuda = false;
+						}
+						// se não entrou no if é porque este é o segundo erro e bitMuda recebe true e a proxima previsão será para o contrario.
+						else{
+							bitMuda = false;
+							toma = "T";
+						}
+					}
+				}
 			}
 		}
 		else {
-			//esse salto possui correlação
-			for(int y = 0; y < salto.size(); y++) {
-				std::string valor = matrizSaltos[u][y];
-				if(valor == "T") {
-					resultadosPredicoes[u+counter][y] = valor;
-					if(tomado == true && valor == "T") {
-						resultadosPredicoes[u*2][y] = "A";
-						bitMuda = true;
-					}
-					else if(tomado == true && valor == "N") {
-						resultadosPredicoes[u*2][y] = "E";
-						if(bitMuda == false) {
-							bitMuda = true;
-							tomado = false;
-						}
-						else {
-							bitMuda = false;
-						}
-					}
-					else if(tomado == false && valor == "N") {
-						resultadosPredicoes[u*2][y] = "A";
-						bitMuda = true;
-					}
-					else if(tomado == false && valor == "T") {
-						resultadosPredicoes[u*2][y] = "E";
-						if(bitMuda == false) {
-							bitMuda = true;
-							tomado = false;
-						}
-						else {
-							bitMuda = false;
-						}
-					}
-				}
-				counter++;
-			}
+			// esse for analiza cada uma das strings
+			for(int k = 1; k < sizeVectorU; k++) {}
 		}
-		counter = 0;
 	}
 }
 

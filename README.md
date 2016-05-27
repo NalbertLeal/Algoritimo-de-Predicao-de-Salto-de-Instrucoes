@@ -2,12 +2,14 @@
 
 ### tópicos abordados:  
   
+- **Introdução**;
+- **O projeto**;
 - **A implementação**;
 - **Como compilar e executar**
 - **Testes realizados**;
 - **Bugs**;
 - **Observações**;
-- **Sobre mim**;
+- **Sobre o grupo**;
 
 ##### status do projeto: **Em desenvolvimento**  
     
@@ -24,10 +26,10 @@ Esse projeto está sendo desenvolvido como uma atividade complementar ao semestr
   
   Os seguintes arquivos são pertencentes a implementação da predição até o momento:
   
-  1) **src/drive_hash_Version3.hpp** : Contém o codigo da função main
-  2) **include/DoisBin.hpp** :  Contém a classe DoisBin.
-  3) **include/DoisBin.inl** : Contém a implentação dos métodos da classe DoisBin.
-  4) **Doxygen** :  Arquivo de configuração para gerar a documentação do codigo com o doxygen.
+  1) **src/drive_hash_Version3.hpp** : Contém o codigo da função main  
+  2) **include/DoisBin.hpp** :  Contém a classe DoisBin.  
+  3) **include/DoisBin.inl** : Contém a implentação dos métodos da classe DoisBin.  
+  4) **Doxygen** :  Arquivo de configuração para gerar a documentação do codigo com o doxygen.  
   
 ### Como compilar e executar
   Para compilar o código é indicado o compilador g++ pois esse foi o programa utilizado na compilação do codigo. Assumindo que os requerimentos/conselhos estejam sendo seguidos para compilar o codigo do vector usando o g++ é necessario utilizar o seguinte comando no terminar dentro da pasta Vector:
