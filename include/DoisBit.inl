@@ -21,6 +21,7 @@ void DoisBit::run(int &argc, char const *argv[]) {
 	std::string nomeArquivo = argv[1];
 
   	this->lerArquivo(nomeArquivo);
+
   	this->preditor();
 
   	// imprime na tela do usuario oque foi lido
@@ -67,7 +68,6 @@ void DoisBit::lerArquivo(std::string nomeArquivo) {
 		std::getline(fileIn, linha);
 		this->extrairSalto(linha, matrizSaltos[k]);
 	}
-
 }
 
 /*
@@ -104,29 +104,28 @@ void DoisBit::extrairSalto(std::string linha, std::vector<std::string> & salto) 
 }
 
 void DoisBit::preditor() {
-	std::string toma = this->tomado;
-	bool bitMuda = true;
-	int counter1 = 0, counter2 = 1;
+		std::string toma = this->tomado;
+		bool bitMuda = true;
+		int counter1 = 0, counter2 = 1;
 
 	for(int u = 0; u < this->matrizSaltos.size(); u++) {
 		int sizeVectorU = this->matrizSaltos[u].size();
+		std::cout << sizeVectorU << "\n"; // sizeVectorU = 0; DESCOBRIR O PQ !!!!
 		// this->resultadosPredicoes[counter1] armazena a previsão doque o algoritimo acha que vai acontecer no salto
 		// o size de resultadosPredicoes[counter1] é igual a sizeVectorU-1 pois o primeiro elemento de matrizSaltos[u] é referente a correlação
 		this->resultadosPredicoes[counter1] = std::vector<std::string>(sizeVectorU-1);
 		// this->resultadosPredicoes[counter2] armazena a o resultado se oque está em this->resultadosPredicoes[counter1] é igual ou não a this->matrizSaltos[u]
 		// o size de resultadosPredicoes[counter1] é igual a sizeVectorU-1 pois o primeiro elemento de matrizSaltos[u] é referente a correlação
 		this->resultadosPredicoes[counter2] = std::vector<std::string>(sizeVectorU-1);
-		counter1++;
-		counter2++;
 		// se entrar nesse if esse salto não possui correlação
+		std::cout << ">>> size resultatdos[counter1] = " << resultadosPredicoes[counter1].size() << std::endl;
+		std::cout << ">>> size resultatdos[counter2] = " << resultadosPredicoes[counter2].size() << std::endl;
 		if(matrizSaltos[u][0] == "0") {
-
-
-			// falha de segmentação ==>
-
 			// esse for analiza cada uma das strings
 			for(int k = 1; k < sizeVectorU && matrizSaltos[u][k] != ""; k++) {
 				// adiciona oque se espara nesse salto a previsão
+				std::cout << ">>> toma: " << toma << "\n";
+				std::cout << ">>> bitMuda: " << bitMuda << "\n";
 				resultadosPredicoes[counter1][k-1] = toma;
 				// se entrar nesse if matrizSaltos[u][k] armazena o valor "T".
 				if(matrizSaltos[u][k] == "T") {
@@ -134,7 +133,7 @@ void DoisBit::preditor() {
 					if(toma == "T") {
 						//	adiciona um "A" para indicar que a previsão esta correta.
 						resultadosPredicoes[counter2][k-1] = "A";
-						bitMuda == true;
+						bitMuda = true;
 					}
 					// se não entrou no if a previsão estava errada, então entra no else
 					else {
@@ -148,15 +147,15 @@ void DoisBit::preditor() {
 						else{
 							//	adiciona um "A" para indicar que a previsão esta errada.
 							resultadosPredicoes[counter2][k-1] = "E";
-							bitMuda = false;
-							toma = "F";
+							bitMuda = true;
+							toma = "T";
 						}
 					}
 				}
-				// se não entrou no if vai entrar no else pois matrizSaltos[u][k] armazena o valor "F"
+				// se não entrou no if vai entrar no else pois matrizSaltos[u][k] armazena o valor "N", ou seja "não tomado"
 				else{
 					// se entrar nesse if a previsão esta correta armazena o valor "T"
-					if(toma == "F") {
+					if(toma == "N") {
 						//	adiciona um "A" para indicar que a previsão esta correta.
 						resultadosPredicoes[counter2][k-1] = "A";
 						bitMuda == true;
@@ -173,8 +172,8 @@ void DoisBit::preditor() {
 						else{
 							//	adiciona um "A" para indicar que a previsão esta errada.
 							resultadosPredicoes[counter2][k-1] = "E";
-							bitMuda = false;
-							toma = "T";
+							bitMuda = true;
+							toma = "N";
 						}
 					}
 				}
@@ -201,14 +200,8 @@ void DoisBit::preditor() {
 				counter3++;
 			}
 
-			//  <== falha de segmentação
-
-
-
 			// resize de vectorCorrelacao para ter o tamanho exato do vector com a quantidade exata de correlações.
 			//vectorCorrelacao.resize(counter3);
-
-			std::cout << ">>> passou no TESTE\n";
 
 			// agora o salto com correlação sera analizado. OBS.: sem a correlação.
 			for(int k = 1; k < sizeVectorU && matrizSaltos[u][k] != ""; k++) {
@@ -234,15 +227,15 @@ void DoisBit::preditor() {
 						else{
 							//	adiciona um "A" para indicar que a previsão esta errada.
 							resultadosPredicoes[counter2][k-1] = "E";
-							bitMuda = false;
-							toma = "F";
+							bitMuda = true;
+							toma = "T";
 						}
 					}
 				}
 				// se não entrou no if vai entrar no else pois matrizSaltos[u][k] armazena o valor "F"
 				else{
 					// se entrar nesse if a previsão esta correta armazena o valor "T"
-					if(toma == "F") {
+					if(toma == "N") {
 						//	adiciona um "A" para indicar que a previsão esta correta.
 						resultadosPredicoes[counter2][k-1] = "A";
 						bitMuda == true;
@@ -259,8 +252,8 @@ void DoisBit::preditor() {
 						else{
 							//	adiciona um "A" para indicar que a previsão esta errada.
 							resultadosPredicoes[counter2][k-1] = "E";
-							bitMuda = false;
-							toma = "T";
+							bitMuda = true;
+							toma = "N";
 						}
 					}
 				}
@@ -281,6 +274,15 @@ void DoisBit::preditor() {
 			}
 
 		}
+		for(size_t op = 0; op < resultadosPredicoes[counter1].size(); op++)
+			std::cout << resultadosPredicoes[counter1][op] << " ";
+		std::cout << "\n";
+		for(size_t op = 0; op < resultadosPredicoes[counter1].size(); op++)
+			std::cout << resultadosPredicoes[counter2][op] << " ";
+		std::cout << "\n";
+
+		counter1 += 2;
+		counter2 += 2;
 	}
 	std::cout << "\n\n>>> size resultadosPredicoes : " << resultadosPredicoes.size() << std::endl;
 }
