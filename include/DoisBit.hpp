@@ -37,6 +37,8 @@ class DoisBit {
 		bool predicao();
 		void extrairSalto(std::string, std::vector<std::string> &);
 
+		void testeCorrelacao(int, int, std::vector<int>, std::string &);
+
 		void preditor();
 
 		void clear();
