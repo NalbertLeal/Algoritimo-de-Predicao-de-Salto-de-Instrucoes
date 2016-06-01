@@ -26,7 +26,7 @@ Esse projeto está sendo desenvolvido como uma atividade complementar ao semestr
   
   Os seguintes arquivos são pertencentes a implementação da predição até o momento:
   
-  1) **src/drive_hash_Version3.hpp** : Contém o codigo da função main  
+  1) **src/main.cpp** : Contém o codigo da função main  
   2) **include/DoisBin.hpp** :  Contém a classe DoisBin.  
   3) **include/DoisBin.inl** : Contém a implentação dos métodos da classe DoisBin.  
   4) **Doxygen** :  Arquivo de configuração para gerar a documentação do codigo com o doxygen.  
